@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.suffix {
+  position: absolute;
+  height: 20px;
+  width: 50px;
+  right: 20px;
+  top: 50%;
+  margin-top: -10px;
+}
+
+.VISA {
+  background: url(../../public/images/visa.svg) center center no-repeat;
+}
+
+.MASTERCARD {
+  background: url(../../public/images/master.svg) center center no-repeat;
+}
