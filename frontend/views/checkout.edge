@@ -1,0 +1,140 @@
+@layout('layouts/checkout')
+@set('title', 'Checkout')
+
+@section('extra')
+  @entryPointScripts('checkout')
+@end
+
+@section('body')
+
+    <div class="flex-none md:flex p-16 font-form space-y-4 md:space-y-0 md:space-x-4">
+      <form action="/order" method="POST" class="md:w-2/3 md:grid md:grid-cols-2 gap-4 space-y-4 md:space-y-0" autocomplete="new-password">
+        <h4 class="col-span-2 uppercase text-sm flex">
+          <span class="md:-ml-7 mr-2 leading-5 w-5 h-5 text-center text-white text-xs bg-black rounded-full inline-block">1</span>
+          personal information
+        </h4>
+        @!component('components/formField', {
+          label: 'First name',
+          type: 'text',
+          name: 'firstName',
+          error: true
+        })
+        @!component('components/formField', {
+          label: 'Last name',
+          type: 'text',
+          name: 'lastName'
+
+        })
+        @!component('components/formField', {
+          label: 'Email',
+          type: 'text',
+          name: 'email',
+          className: 'col-span-2'
+        })
+        @!component('components/formField', {
+          label: 'Country',
+          type: 'select',
+          name: 'country'
+        })
+        @!component('components/formField', {
+          label: 'Postal Code',
+          type: 'text',
+          name: 'postalCode'
+        })
+        @!component('components/formField', {
+          label: 'Phone Number',
+          type: 'text',
+          name: 'phone',
+          className: 'col-span-2'
+        })
+
+        <h4 class="col-span-2 uppercase text-sm flex pt-4 items-center">
+          <span class="md:-ml-7 mr-2 leading-5 w-5 h-5 text-center text-white text-xs bg-black rounded-full inline-block">2</span>
+          payment details
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-3" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+        </svg>
+        </h4>
+
+        @component('components/formField', {
+          label: 'Credit Card Number',
+          type: 'text',
+          name: 'creditCard',
+          className: 'col-span-2',
+        })
+          <span id="cardType" class="suffix" />
+        @end
+        @component('components/formField', {
+          label: 'Security code',
+          type: 'password',
+          name: 'CVV'
+        })
+          <span class="suffix text-gray-400 cursor-help" title="What the CVV...">
+            <svg xmlns="http://www.w3.org/2000/svg" class="absolute right-0 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </span>
+        @end
+        @!component('components/formField', {
+          label: 'Expiration date',
+          type: 'text',
+          name: 'expDate'
+        })
+        <button
+          type="submit"
+          class="
+          flex
+          items-center
+          justify-center col-span-2 rounded p-4
+          uppercase text-xs font-semibold text-white
+          bg-lime-500 border-b-2 border-lime-600
+          focus:bg-lime-600
+          transition-opacity
+          hover:opacity-80
+          "
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 fill-current mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+          </svg>
+
+          Complete purchase
+        </button>
+      </form>
+      <div class="md:w-1/3">
+        <div class="bg-white border-b-2 border-gray-300 rounded p-1 mt-9">
+          <div class="border-dashed border border-gray-400 p-4 rounded">
+            <span class="uppercase font-semibold text-sm">Your order</span>
+            <div class="divide-y divide-gray-400 divide-dashed">
+              <ul class="py-2 text-xs font-thin">
+                @each(item in cart.items)
+                  <li class="flex justify-between py-1">
+                    <span>{{ item.name }}</span>
+                    <span>$ {{ item.price}}</span>
+                  </li>
+                @end
+              </ul>
+              <ul class="py-2 text-xs font-thin">
+                <li class="flex justify-between py-1">
+                  <span>Total purchase</span>
+                  <span>$ {{ cart.totals.subTotal }}</span>
+                </li>
+                <li class="flex justify-between py-1">
+                  <span>Estimated tax</span>
+                  <span>$ {{ cart.totals.tax }}</span>
+                </li>
+              </ul>
+              <ul class="py-2">
+                <li class="flex justify-between">
+                  <span class="text-sm font-semibold">Total</span>
+                  <span class="text-lg font-bold">$ {{ cart.totals.grandTotal }}</span>
+                </li>
+              </ul>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+@endsection

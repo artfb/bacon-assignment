@@ -1,6 +1,10 @@
 @layout('layouts/main')
 @set('title', 'Bacon factory')
 
+@section('extra')
+  @entryPointScripts('bacon')
+@end
+
 @section('body')
   @!component('snowdog/bacon', {
     img: '/images/bacon.jpg'
